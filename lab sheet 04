@@ -1,0 +1,188 @@
+Objective: To understand the basic concept of programming.
+ Language: Python
+
+1. Print "Hello, World!"
+
+print("Hello, World!")
+
+2. Display multiple values
+
+a, b = 10, 20
+print("Values are:", a, b)
+
+3. Arithmetic operations
+
+a, b = 5, 3
+print(a + b, a - b, a * b, a / b, a % b, a ** b)
+
+🔹 Conditional Statements
+
+4. Check odd or even 
+
+n = int(input("Enter number: "))
+print("Even" if n % 2 == 0 else "Odd")
+
+5. Positive, negative, or zero
+
+n = int(input("Enter number: "))
+if n > 0: print("Positive")
+elif n < 0: print("Negative")
+else: print("Zero")
+
+6. Leap year check
+
+year = int(input("Enter year: "))
+if (year % 400 == 0) or (year % 4 == 0 and year % 100 != 0):
+    print("Leap Year")
+else:
+    print("Not a Leap Year")
+
+🔹 Loops
+
+7. Numbers from 1 to N
+
+n = int(input("Enter N: "))
+for i in range(1, n + 1):
+    print(i, end=" ")
+
+8. Squares from 0 to N-1
+
+n = int(input("Enter N: "))
+for i in range(n):
+    print(i ** 2, end=" ")
+
+9. Reverse a number
+
+n = int(input("Enter number: "))
+rev = 0
+while n:
+    rev = rev * 10 + n % 10
+    n //= 10
+print("Reversed:", rev)
+
+🔹 Functions
+
+10. Factorial
+
+def factorial(n):
+    fact = 1
+    for i in range(1, n + 1):
+        fact *= i
+    return fact
+
+print(factorial(int(input("Enter number: "))))
+
+11. Prime check
+
+def is_prime(n):
+    if n < 2: return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0: return False
+    return True
+
+print(is_prime(int(input("Enter number: "))))
+
+12. Fibonacci sequence
+
+def fib(n):
+    a, b = 0, 1
+    for _ in range(n):
+        print(a, end=" ")
+        a, b = b, a + b
+
+fib(int(input("Enter terms: ")))
+
+🔹 Data Structures
+
+13. List operations
+
+lst = [10, 20, 30]
+lst.append(40)
+lst.insert(1, 15)
+lst.remove(30)
+lst.sort()
+print(lst)
+
+14. List comprehension
+
+n = [x ** 2 for x in range(1, 11) if x % 2 == 0]
+print(n)
+
+15. Tuple immutability
+
+t = (1, 2, 3)
+print(t)
+# t[0] = 10  # Error: tuples are immutable
+
+16. Set remove duplicates
+
+nums = [1, 2, 2, 3, 3, 4]
+print(set(nums))
+
+17. Dictionary operations
+
+student = {"name": "Amit", "age": 21}
+student["marks"] = 88
+print(student["name"], student["marks"])
+
+
+🔹 Strings
+
+18. Count vowels
+
+s = input("Enter string: ")
+vowels = 'aeiouAEIOU'
+count = sum(1 for ch in s if ch in vowels)
+print("Vowels:", count)
+
+19. Reverse a string
+
+s = input("Enter string: ")
+print(s[::-1])
+
+20. Palindrome check
+
+s = input("Enter string: ")
+print("Palindrome" if s == s[::-1] else "Not palindrome")
+
+21. String formatting
+
+name, age = "Shivam", 21
+print(f"My name is {name} and I am {age} years old.")
+
+
+Advanced Python (Optional)
+
+22. itertools.product()
+
+from itertools import product
+a = [1, 2]
+b = ['x', 'y']
+print(list(product(a, b)))
+
+23. collections.Counter()
+
+from collections import Counter
+s = "hello"
+print(Counter(s))
+
+24. datetime formatting
+
+from datetime import datetime
+date_str = "2025-10-05"
+d = datetime.strptime(date_str, "%Y-%m-%d")
+print(d.strftime("%d-%b-%Y"))
+
+
+25. Email validation
+
+import re
+email = input("Enter email: ")
+if re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email):
+    print("Valid")
+else:
+    print("Invalid")
+
+
+
+
