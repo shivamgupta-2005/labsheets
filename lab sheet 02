@@ -1,0 +1,298 @@
+1️⃣ Linear Search with Count
+#include <stdio.h>
+int main() {
+    int a[50], n, x, count = 0;
+    printf("Enter size: "); scanf("%d", &n);
+    printf("Enter elements: ");
+    for(int i=0;i<n;i++) scanf("%d",&a[i]);
+    printf("Enter number to find: "); scanf("%d",&x);
+    for(int i=0;i<n;i++)
+        if(a[i]==x){ printf("Found at %d\n",i+1); count++; }
+    printf("Total count = %d",count);
+    return 0;
+}
+
+2️⃣ Binary Search (Iterative)
+
+#include <stdio.h>
+int main() {
+    int a[50], n, x, low=0, high, mid;
+    printf("Enter size: "); scanf("%d",&n);
+    for(int i=0;i<n;i++) scanf("%d",&a[i]);
+    printf("Enter element: "); scanf("%d",&x);
+    high=n-1;
+    while(low<=high){
+        mid=(low+high)/2;
+        printf("low=%d mid=%d high=%d\n",low,mid,high);
+        if(a[mid]==x){ printf("Found at %d",mid+1); return 0;}
+        else if(a[mid]<x) low=mid+1;
+        else high=mid-1;
+    }
+    printf("Not found");
+}
+
+3️⃣ Jump Search vs Linear Search
+#include <stdio.h>
+#include <math.h>
+#include <time.h>
+int main(){
+    int a[1000], n, x;
+    clock_t t1,t2;
+    printf("Enter n: "); scanf("%d",&n);
+    for(int i=0;i<n;i++) a[i]=i+1;
+    printf("Enter number: "); scanf("%d",&x);
+    int step=sqrt(n), i=0;
+
+    t1=clock();
+    while(i<n && a[i]<x) i+=step;
+    for(int j=i-step;j<n && j<=i;j++)
+        if(a[j]==x) break;
+    t2=clock();
+    double jump_time=(double)(t2-t1)/CLOCKS_PER_SEC;
+
+    t1=clock();
+    for(int j=0;j<n;j++) if(a[j]==x) break;
+    t2=clock();
+    double lin_time=(double)(t2-t1)/CLOCKS_PER_SEC;
+
+    printf("Jump=%.6f Linear=%.6f",jump_time,lin_time);
+}
+
+4️⃣ Interpolation vs Binary Search
+#include <stdio.h>
+int main(){
+    int n=10,a[10],x,steps1=0,steps2=0;
+    for(int i=0;i<n;i++) a[i]=i*10;
+    printf("Enter number: "); scanf("%d",&x);
+
+    int low=0,high=n-1,mid;
+    while(low<=high){
+        mid=(low+high)/2; steps1++;
+        if(a[mid]==x) break;
+        else if(a[mid]<x) low=mid+1;
+        else high=mid-1;
+    }
+
+    low=0; high=n-1;
+    while(low<=high && x>=a[low] && x<=a[high]){
+        int pos=low+((x-a[low])*(high-low)/(a[high]-a[low]));
+        steps2++;
+        if(a[pos]==x) break;
+        if(a[pos]<x) low=pos+1; else high=pos-1;
+    }
+
+    printf("Binary steps=%d  Interpolation steps=%d",steps1,steps2);
+}
+
+5️⃣ Exponential Search
+#include <stdio.h>
+int binary(int a[],int l,int r,int x){
+    while(l<=r){
+        int m=(l+r)/2;
+        if(a[m]==x) return m;
+        if(a[m]<x) l=m+1; else r=m-1;
+    } return -1;
+}
+int main(){
+    int a[100],n,x,i=1;
+    printf("Enter n: "); scanf("%d",&n);
+    for(int j=0;j<n;j++) a[j]=j+1;
+    printf("Enter element: "); scanf("%d",&x);
+    if(a[0]==x){printf("Found at 1");return 0;}
+    while(i<n && a[i]<=x) i*=2;
+    int res=binary(a,i/2,(i<n)?i:n-1,x);
+    printf("Found at %d",res+1);
+}
+
+6️⃣ Bubble Sort with Optimization
+#include <stdio.h>
+int main(){
+    int a[10],n,temp,flag;
+    printf("Enter n: "); scanf("%d",&n);
+    for(int i=0;i<n;i++) scanf("%d",&a[i]);
+
+    int pass1=0;
+    for(int i=0;i<n-1;i++){
+        for(int j=0;j<n-i-1;j++)
+            if(a[j]>a[j+1]){temp=a[j];a[j]=a[j+1];a[j+1]=temp;}
+        pass1++;
+    }
+
+    int b[10]; for(int i=0;i<n;i++) b[i]=a[i];
+    int pass2=0;
+    for(int i=0;i<n-1;i++){
+        flag=0;
+        for(int j=0;j<n-i-1;j++)
+            if(b[j]>b[j+1]){int t=b[j];b[j]=b[j+1];b[j+1]=t;flag=1;}
+        pass2++;
+        if(flag==0) break;
+    }
+    printf("Normal passes=%d Optimized passes=%d",pass1,pass2);
+}
+
+7️⃣ Selection Sort & Stability
+#include <stdio.h>
+struct stu{int roll,marks;};
+int main(){
+    struct stu s[5]={{1,80},{2,70},{3,80},{4,60},{5,90}};
+    int n=5;
+    for(int i=0;i<n-1;i++){
+        int min=i;
+        for(int j=i+1;j<n;j++)
+            if(s[j].marks<s[min].marks) min=j;
+        struct stu t=s[i]; s[i]=s[min]; s[min]=t;
+    }
+    for(int i=0;i<n;i++)
+        printf("%d %d\n",s[i].roll,s[i].marks);
+    printf("Selection sort is not stable.\n");
+}
+
+8️⃣ Insertion Sort
+#include <stdio.h>
+int main(){
+    int a[6]={5,2,4,6,1,3},i,j,key;
+    for(i=1;i<6;i++){
+        key=a[i]; j=i-1;
+        while(j>=0 && a[j]>key){a[j+1]=a[j];j--;}
+        a[j+1]=key;
+        printf("Step %d: ",i);
+        for(int k=0;k<6;k++) printf("%d ",a[k]);
+        printf("\n");
+    }
+}
+
+9️⃣ Merge Sort
+#include <stdio.h>
+void merge(int a[],int l,int m,int r){
+    printf("Merging %d-%d and %d-%d\n",l,m,m+1,r);
+    int n1=m-l+1,n2=r-m,L[50],R[50];
+    for(int i=0;i<n1;i++) L[i]=a[l+i];
+    for(int j=0;j<n2;j++) R[j]=a[m+1+j];
+    int i=0,j=0,k=l;
+    while(i<n1 && j<n2) a[k++]=(L[i]<=R[j])?L[i++]:R[j++];
+    while(i<n1) a[k++]=L[i++];
+    while(j<n2) a[k++]=R[j++];
+}
+void sort(int a[],int l,int r){
+    if(l<r){int m=(l+r)/2; sort(a,l,m); sort(a,m+1,r); merge(a,l,m,r);}
+}
+int main(){
+    int a[]={38,27,43,3,9,82,10},n=7;
+    sort(a,0,n-1);
+    for(int i=0;i<n;i++) printf("%d ",a[i]);
+}
+
+🔟 Quick Sort & Worst Case
+
+#include <stdio.h>
+int count=0;
+int partition(int a[],int low,int high){
+    int pivot=a[low],i=low+1,j=high,temp;
+    while(1){
+        while(i<=high && a[i]<=pivot){i++;count++;}
+        while(a[j]>pivot){j--;count++;}
+        if(i<j){temp=a[i];a[i]=a[j];a[j]=temp;}
+        else{temp=a[low];a[low]=a[j];a[j]=temp;return j;}
+    }
+}
+void quick(int a[],int low,int high){
+    if(low<high){
+        int p=partition(a,low,high);
+        quick(a,low,p-1);
+        quick(a,p+1,high);
+    }
+}
+int main(){
+    int a[]={5,3,8,4,2},n=5;
+    quick(a,0,n-1);
+    printf("Comparisons=%d\n",count);
+}
+
+11️⃣ Fixed-Size Stack (Array)
+
+#include <stdio.h>
+#define MAX 5
+int stack[MAX],top=-1;
+void push(int x){ if(top==MAX-1) printf("Overflow\n"); else stack[++top]=x;}
+void pop(){ if(top==-1) printf("Underflow\n"); else top--;}
+void display(){ for(int i=top;i>=0;i--) printf("%d ",stack[i]); printf("\n");}
+int main(){
+    push(10);push(20);display();
+    pop();display();
+}
+
+12️⃣ Dynamic Stack (Linked List)
+
+#include <stdio.h>
+#include <stdlib.h>
+struct node{char url[50];struct node*next;};
+struct node*top=NULL;
+void push(char *u){struct node*n=malloc(sizeof(struct node));strcpy(n->url,u);n->next=top;top=n;}
+void pop(){if(top==NULL) printf("No history\n");else{printf("Back from %s\n",top->url);top=top->next;}}
+void show(){struct node*t=top;while(t){printf("%s->",t->url);t=t->next;}printf("NULL\n");}
+int main(){push("google");push("youtube");show();pop();show();}
+
+13️⃣ Circular Buffer Stack
+
+#include <stdio.h>
+#define SIZE 5
+int stack[SIZE],top=-1;
+void push(int val){
+    top=(top+1)%SIZE;
+    stack[top]=val;
+    printf("Pushed %d\n",val);
+}
+void show(){
+    printf("Buffer: ");
+    for(int i=0;i<SIZE;i++) printf("%d ",stack[i]);
+    printf("\nTop=%d\n",top);
+}
+int main(){for(int i=1;i<=7;i++){push(i);show();}}
+
+14️⃣ Priority Stack
+
+#include <stdio.h>
+struct task{char name[20];int p;};
+struct task s[10];int top=-1;
+void push(char *n,int p){top++;strcpy(s[top].name,n);s[top].p=p;}
+void pop(){
+    if(top==-1){printf("Empty\n");return;}
+    int max=0;
+    for(int i=1;i<=top;i++) if(s[i].p>s[max].p) max=i;
+    printf("Executing %s\n",s[max].name);
+    for(int i=max;i<top;i++) s[i]=s[i+1];
+    top--;
+}
+int main(){
+    push("A",1);push("B",3);push("C",2);
+    pop();pop();pop();
+}
+
+15️⃣ Undo Stack
+#include <stdio.h>
+#include <string.h>
+char stack[10][100];int top=-1;
+void save(char *s){strcpy(stack[++top],s);}
+void undo(){if(top>=0) printf("Undo -> %s\n",stack[top--]);else printf("No more undos\n");}
+int main(){
+    save("Hello");save("Hello World");save("Hello ChatGPT");
+    undo();undo();undo();undo();
+}
+
+16️⃣ Double Stack in One Array
+
+#include <stdio.h>
+#define MAX 10
+int a[MAX],top1=-1,top2=MAX;
+void push1(int x){if(top1+1==top2)printf("Overflow\n");else a[++top1]=x;}
+void push2(int x){if(top2-1==top1)printf("Overflow\n");else a[--top2]=x;}
+void pop1(){if(top1==-1)printf("Underflow\n");else top1--;}
+void pop2(){if(top2==MAX)printf("Underflow\n");else top2++;}
+void show(){printf("Stack1: ");for(int i=0;i<=top1;i++)printf("%d ",a[i]);
+             printf("\nStack2: ");for(int i=MAX-1;i>=top2;i--)printf("%d ",a[i]);printf("\n");}
+int main(){push1(1);push2(9);push1(2);show();pop2();show();}
+
+
+
+
+
