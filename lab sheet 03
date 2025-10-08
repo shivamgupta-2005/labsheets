@@ -1,0 +1,167 @@
+1. Struct for Employee Details
+
+#include <stdio.h>
+struct Employee { char name[30]; int id; float salary; };
+int main() {
+    struct Employee e[3];
+    for(int i=0;i<3;i++){
+        printf("Enter name, id, salary: ");
+        scanf("%s%d%f", e[i].name, &e[i].id, &e[i].salary);
+    }
+    for(int i=0;i<3;i++)
+        printf("%s %d %.2f\n", e[i].name, e[i].id, e[i].salary);
+}
+
+2. Union Example
+
+#include <stdio.h>
+union Data { int i; float f; };
+int main() {
+    union Data d;
+    d.i = 10; printf("i = %d\n", d.i);
+    d.f = 3.5; printf("f = %.1f\n", d.f);
+}
+
+3. Pointer Swap
+
+#include <stdio.h>
+void swap(int *a,int *b){int t=*a;*a=*b;*b=t;}
+int main(){int x=5,y=10;swap(&x,&y);printf("%d %d",x,y);}
+
+4. Double Pointer (2D Array)
+
+#include <stdio.h>
+#include <stdlib.h>
+int main(){
+    int **a,r=2,c=3;
+    a = malloc(r*sizeof(int*));
+    for(int i=0;i<r;i++) a[i]=malloc(c*sizeof(int));
+    for(int i=0;i<r;i++) for(int j=0;j<c;j++) a[i][j]=i+j;
+    for(int i=0;i<r;i++){for(int j=0;j<c;j++) printf("%d ",a[i][j]);printf("\n");}
+}
+
+5. Call by Value Swap (Fails)
+
+#include <stdio.h>
+void swap(int a,int b){int t=a;a=b;b=t;}
+int main(){int x=5,y=10;swap(x,y);printf("%d %d",x,y);}
+
+6. Call by Reference Swap (Works)
+
+#include <stdio.h>
+void swap(int *a,int *b){int t=*a;*a=*b;*b=t;}
+int main(){int x=5,y=10;swap(&x,&y);printf("%d %d",x,y);}
+
+7. Nested Function Simulation
+
+#include <stdio.h>
+void helper(){printf("Helper called\n");}
+void mainFn(void (*f)()){printf("Main\n");f();}
+int main(){mainFn(helper);}
+
+8. Max in Array
+
+#include <stdio.h>
+int max(int a[],int n){int m=a[0];for(int i=1;i<n;i++)if(a[i]>m)m=a[i];return m;}
+int main(){int a[]={2,5,3,9};printf("Max=%d",max(a,4));}
+
+9. Pointer Modify
+
+#include <stdio.h>
+void change(int *p){*p=20;}
+int main(){int x=10;change(&x);printf("%d",x);}
+
+10. Struct with Pointer
+
+#include <stdio.h>
+struct Data{int *p;};
+int main(){int x=5;struct Data d={&x};*d.p=10;printf("%d",x);}
+
+11. Pointer Arithmetic
+
+#include <stdio.h>
+int main(){int a[]={1,2,3,4,5};int *p=a;
+for(int i=0;i<5;i++)printf("%d ",*(p+i));}
+
+12. Dynamic Books
+
+#include <stdio.h>
+#include <stdlib.h>
+struct Book{char title[20],author[20];float price;};
+int main(){
+    struct Book *b=malloc(5*sizeof(struct Book));
+    for(int i=0;i<5;i++)scanf("%s%s%f",b[i].title,b[i].author,&b[i].price);
+    for(int i=0;i<5;i++)printf("%s %s %.2f\n",b[i].title,b[i].author,b[i].price);
+}
+
+13. Pointer to Largest Element
+
+#include <stdio.h>
+int* largest(int a[],int n){int *max=&a[0];for(int i=1;i<n;i++)if(a[i]>*max)max=&a[i];return max;}
+int main(){int a[]={2,5,1,9};printf("%d",*largest(a,4));}
+
+
+14. Array of Pointers to Strings
+
+#include <stdio.h>
+int main(){
+    char names[5][20];
+    char *p[5];
+    for(int i=0;i<5;i++){scanf("%s",names[i]);p[i]=names[i];}
+    for(int i=0;i<5;i++)printf("%s\n",p[i]);
+}
+
+15. Car Struct with Pointer
+
+#include <stdio.h>
+struct Car{char model[20];int year;float price;};
+int main(){
+    struct Car c={"BMW",2020,50000},*p=&c;
+    p->price=60000;printf("%s %d %.2f",p->model,p->year,p->price);
+}
+
+16. Struct with Union
+
+#include <stdio.h>
+struct Data{int type; union{int i;float f;}u;};
+int main(){struct Data d;d.type=0;d.u.i=10;printf("%d",d.u.i);}
+
+17. Function Pointer for Operations
+
+#include <stdio.h>
+int add(int a,int b){return a+b;}
+int sub(int a,int b){return a-b;}
+int mul(int a,int b){return a*b;}
+int main(){
+    int a=5,b=3;int ch;scanf("%d",&ch);
+    int (*f[])(int,int)={add,sub,mul};
+    printf("%d",f[ch-1](a,b));
+}
+
+18. Sum of 2D Array
+
+#include <stdio.h>
+int sum2D(int a[2][3]){int s=0;for(int i=0;i<2;i++)for(int j=0;j<3;j++)s+=a[i][j];return s;}
+int main(){int a[2][3]={{1,2,3},{4,5,6}};printf("%d",sum2D(a));}
+
+19. Recursive Factorial (Pointer)
+
+#include <stdio.h>
+void fact(int n,long *res){if(n==0||n==1)*res=1;else{fact(n-1,res);*res*=n;}}
+int main(){long f;fact(5,&f);printf("%ld",f);}
+
+20. Sort Students by Marks
+
+#include <stdio.h>
+struct Stu{char name[20];int marks;};
+int main(){
+    struct Stu s[3]={{"A",90},{"B",70},{"C",85}};
+    for(int i=0;i<2;i++)for(int j=i+1;j<3;j++)if(s[i].marks<s[j].marks){
+        struct Stu t=s[i];s[i]=s[j];s[j]=t;}
+    for(int i=0;i<3;i++)printf("%s %d\n",s[i].name,s[i].marks);
+}
+
+
+
+
+
